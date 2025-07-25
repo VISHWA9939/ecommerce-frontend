@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-	baseURL: "https://backend-ecom-fwoc.onrender.com/api",
+	baseURL: "https://backend-ecom-fwoc.onrender.com",
 	withCredentials: true, // send cookies to the server
 	headers: {
 		'Content-Type': 'application/json',
