@@ -12,7 +12,7 @@ export const useCartStore = create((set, get) => ({
 
     getMyCoupon: async () => {
         try {
-            const response = await axios.get("/coupons");
+            const response = await axios.get("/api/coupons");
             // Only set coupon if it exists and is not expired
             if (response.data && new Date(response.data.expirationDate) > new Date()) {
                 set({ 
@@ -36,7 +36,7 @@ export const useCartStore = create((set, get) => ({
         set({ loading: true });
         try {
             console.log('Applying coupon:', code.trim());
-            const response = await axios.post("/coupons/validate", { code: code.trim() });
+            const response = await axios.post("/api/coupons/validate", { code: code.trim() });
             console.log('Coupon response:', response.data);
             
             if (!response.data) {
@@ -84,7 +84,7 @@ export const useCartStore = create((set, get) => ({
 
     getCartItems: async () => {
         try {
-            const res = await axios.get("/cart");
+            const res = await axios.get("/api/cart");
             set({ cart: res.data });
             get().calculateTotals();
         } catch (error) {
@@ -110,7 +110,7 @@ export const useCartStore = create((set, get) => ({
         }
 
         try {
-            await axios.post("/cart", { productId: product._id });
+            await axios.post("/api/cart", { productId: product._id });
             
             set((prevState) => {
                 const existingItem = prevState.cart.find((item) => item._id === product._id);
@@ -133,7 +133,7 @@ export const useCartStore = create((set, get) => ({
 
     removeFromCart: async (productId) => {
         try {
-            await axios.delete(`/cart`, { data: { productId } });
+            await axios.delete(`/api/cart`, { data: { productId } });
             set((prevState) => ({ 
                 cart: prevState.cart.filter((item) => item._id !== productId) 
             }));
@@ -153,7 +153,7 @@ export const useCartStore = create((set, get) => ({
         }
 
         try {
-            await axios.put(`/cart/${productId}`, { quantity });
+            await axios.put(`/api/cart/${productId}`, { quantity });
             set((prevState) => ({
                 cart: prevState.cart.map((item) => 
                     item._id === productId 
